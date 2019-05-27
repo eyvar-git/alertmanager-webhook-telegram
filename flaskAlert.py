@@ -1,4 +1,4 @@
-import telegram
+import requests
 import logging
 from flask import Flask
 from flask import request
@@ -6,8 +6,15 @@ from flask import request
 app = Flask(__name__)
 app.secret_key = 'aYT>.L$kk2h>!'
 
-bot = telegram.Bot(token="botToken")
-chatID = "-xchatIDx"
+TOKEN="botToken"
+CHAT_ID = "-xchatIDx"
+URL = 'https://api.telegram.org/bot' + TOKEN + '/'
+
+proxies = {
+    'http': 'socks5://' + proxy_login + ':' + proxy_pass + '@' + proxy_url + ':' proxy_port,
+    'https': 'socks5://' + proxy_login + ':' + proxy_pass + '@' + proxy_url + ':' proxy_port,
+}
+
 
 @app.route('/alert', methods = ['POST'])
 def postAlertmanager():
@@ -33,12 +40,21 @@ Alertname: """+alert['labels']['alertname']+"""
 Instance: """+alert['labels']['instance']+"""
 """+alert['annotations']['description']+"""
 """
-            bot.sendMessage(chat_id=chatID,text=message)                
+            requests.get(URL + 'sendMessage', proxies=proxies,
+                         params={'chat_id': CHAT_ID,
+                                 'text': message
+                                }
+                    )
+
     except:
 
         logger = logging.getLogger(__name__)
         logger.info(content)
-        bot.sendMessage(chat_id=chatID,text="Failed to send via Flask to Telegram!")
+        requests.get(URL + 'sendMessage', proxies=proxies,
+                         params={'chat_id': CHAT_ID,
+                                 'text': "Failed to send via Flask to Telegram!"
+                                }
+                    )
 
     return ""
 
