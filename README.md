@@ -30,4 +30,12 @@ Running
 
 Running on docker
 =================
-* docker container run -d -e bottoken="telegramBotToken" -e chatid="telegramChatID" -p 9119:9119 nopp/alertmanager-webhook-telegram:latest
+* docker container run -d \
+  -e bottoken="telegramBotToken" \
+  -e chatid="telegramChatID" \
+  -e proxy_login="proxy_login" \
+  -e proxy_pass="proxy_pass" \
+  -e proxy_url="proxy_url" \
+  -e proxy_port="proxy_port" \
+  -p 9119:9119 nopp/alertmanager-webhook-telegram:latest
+
