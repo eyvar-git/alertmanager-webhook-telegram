@@ -1,3 +1,5 @@
 flask
 python-telegram-bot
 gunicorn
+requests
+requests[socks]
